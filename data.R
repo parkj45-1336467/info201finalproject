@@ -1,1 +1,0 @@
-nba <- read.csv("nba_season_data.csv", stringsAsFactors=FALSE)
