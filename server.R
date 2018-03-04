@@ -4,7 +4,11 @@ nba <- read.csv("data/nba_season_data.csv", stringsAsFactors=FALSE)
 nba <- nba %>% filter(height > 0)
 
 server <- function(input, output) {
-    output$heightPlot <- renderPlot({
+  reactive(
+    nba %>% filter(year == input$year[1])
+  )
+  
+  output$heightPlot <- renderPlot({
      plot(nba$height, nba[, input$stat])
   })
    

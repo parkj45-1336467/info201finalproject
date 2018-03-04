@@ -16,9 +16,12 @@ ui <- fluidPage(
         inputId="stat",
         label="Stat",
         choices=c(
-          "ORB"="orb",
-          "DRB"="drb",
-          "TRB"="trb"
+          "Offensive rebound %"="orb",
+          "Defensive rebound %"="drb",
+          "Assists"="ast",
+          "Steals"="stl",
+          "Blocks"="blk",
+          "Turnovers"="tov"
         )
       )
     ),
