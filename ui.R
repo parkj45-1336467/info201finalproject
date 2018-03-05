@@ -4,7 +4,7 @@ library(shiny)
 
 nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
 # Define UI for app that draws a histogram ----
-  sui <- navbarPage("NBA Vs Height",
+  ui <- navbarPage("NBA Vs Height",
                    tabPanel("Home",
                    sidebarLayout(
                      sidebarPanel(
@@ -38,3 +38,4 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
     )
   )
 )
+shinyUI(ui)
