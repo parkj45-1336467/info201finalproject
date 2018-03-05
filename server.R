@@ -3,11 +3,12 @@ library(ggplot2)
 library(shiny)
 
 nba <- read.csv("data/nba_season_data.csv", stringsAsFactors=FALSE)
-nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
-nba2004$height.feet <- nba2004$height * 0.0833333;
+nba2004 <- nba %>%
+  filter(year >= 2004 & truesalary != "" & height > 0) %>%
+  mutate(height.feet = nba2004$height * 0.0833333) %>%
+  mutate(heightinft = height*0.083)
 
-modifieddata<- nba %>% filter(height > 0) %>% mutate(heightinft = height*0.083)
-heightsdata<- modifieddata %>% group_by(year) %>% summarize(mean = mean(heightinft))
+heightsdata <- nba2004 %>% group_by(year) %>% summarize(mean = mean(heightinft))
 
 
 server <- function(input, output){
@@ -20,9 +21,13 @@ server <- function(input, output){
   gradient <- c("turquoise2", "violet", "navy")
   
   output$plot <- renderPlot({
+    validate(need(nrow(specData()) > 0,
+                  "No data is availible for this query."))
+    validate(need(input$year >= 2004 & input$year <= 2016,
+                  "Please choose a year between 2004 and 2016!"))
     ggplot(data = specData()) +
       geom_bar(mapping = aes(x = reorder(player, height.feet),
-                             y = truesalary,
+                             y = truesalary / 1e+6,
                              fill = height.feet),
                stat = "identity") +
       labs(x = "Player Name",
@@ -30,14 +35,14 @@ server <- function(input, output){
       coord_flip() +
       scale_fill_gradientn(colors = gradient, 
                            guide = guide_colorbar(title = "Height (Feet)")) +
-      scale_y_continuous(name = "Salary (US Dollars)", labels =
-                           scales::dollar_format(
-                             prefix = "$", suffix = "",
-                             largest_with_cents = 1e+05,
-                             big.mark = ",",
-                             negative_parens = FALSE)) +
+      scale_y_continuous(name = "Salary (US Dollars)",
+                         labels = scales::dollar_format(
+                           prefix = "$", suffix = " million",
+                           largest_with_cents = 1e+5,
+                           big.mark = "",
+                           negative_parens = FALSE)) +
       theme(text = element_text(size=17))
-    },
+  },
   height = 500, width = 800)
   
   output$heightvsyearPlot <- renderPlot({
