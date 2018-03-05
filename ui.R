@@ -15,7 +15,7 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                sidebarPanel(
                  tags$img(src = "nbalogo.jpg", height = 150),
                  sliderInput(
-                   "Years",
+                   "p1.slider",
                    "Range of Years",
                    min = min(heightsdata$year),
                    max = max(heightsdata$year),
@@ -33,7 +33,7 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                sidebarPanel(
                  hr(),
                  sliderInput(
-                   "years",
+                   "p2.slider",
                    "Years:",
                    min = 2004,
                    max = 2016,

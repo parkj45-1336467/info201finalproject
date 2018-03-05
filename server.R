@@ -23,7 +23,7 @@ server <- function(input, output){
   ### --------------- Page 1: Height Over Time --------------- ###
   
   output$plot.p1 <- renderPlot({
-    yearseq <- seq(input$Years[1], input$Years[2])
+    yearseq <- seq(input$p1.slider[1], input$p1.slider[2])
     x <- heightsdata[which(heightsdata$year %in% yearseq),]
     ggplot(data = x, aes(x = year, y = mean)) + 
       geom_point(shape = 22,
@@ -48,8 +48,8 @@ server <- function(input, output){
   ### --------------- Page 2: Height Versus Game Stats --------------- ###
   
   output$plot.p2 <- renderPlot({
-    nba <- modifieddata %>% filter (year >= input$years[1] &
-                                      year <= input$years[2] &
+    nba <- modifieddata %>% filter (year >= input$p2.slider[1] &
+                                      year <= input$p2.slider[2] &
                                       per > 0 & orb > 0 & drb > 0 & trb > 0 &
                                       blk > 0 & stl >0 & tov > 0) %>%
       select(per, orb, drb, trb, blk, stl, tov, heightinft)
