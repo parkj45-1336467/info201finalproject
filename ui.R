@@ -4,8 +4,22 @@ library(shiny)
 
 nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
 # Define UI for app that draws a histogram ----
-  ui <- fluidPage(
-    titlePanel("Salary & Height"),
+  shinyUI(navbarPage("NBA Vs Height",
+                   tabPanel("Home",
+                   sidebarLayout(
+                     sidebarPanel(
+                       sliderInput("Years",
+                                   "Range of Years",
+                                   min = min(heightsdata$year),
+                                   max = max(heightsdata$year),
+                                   value = c(min, max))
+                     ,
+                     
+                    
+                     mainPanel(
+                       plotOutput("heightvsyearPlot"))))),
+                       
+    tabPanel("Height Vs Salary",
     sidebarLayout(
       sidebarPanel(
         selectInput("team", "Select a team:", nba2004 %>%
@@ -20,5 +34,4 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
         plotOutput("plot")
       )
     )
-  )
-shinyUI(ui)
+)))
