@@ -46,7 +46,7 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                      "Efficiency",
                      "Defensive Rebound %",
                      "Offensive Rebound %",
-                     "Rebounds",
+                     "Rebound %",
                      "Blocks",
                      "Steals",
                      "Turnovers"
