@@ -2,8 +2,8 @@ library(dplyr)
 library(ggplot2)
 library(shiny)
 
-nba <- read.csv("data/nba_season_data.csv", stringsAsFactors=FALSE)
-nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
+nba <- read.csv("./data/nba_season_data.csv", stringsAsFactors=FALSE)
+nba2004 <- nba %>% filter(year >= 2004 & truesalary != "" )
 nba2004$height.feet <- nba2004$height * 0.0833333;
 
 modifieddata<- nba %>% filter(height > 0) %>% mutate(heightinft = height*0.083)

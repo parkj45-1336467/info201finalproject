@@ -14,6 +14,7 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
                                    max = max(heightsdata$year),
                                    value = c(min, max))
                 
+                       
                      ),
                      mainPanel(
                        plotOutput("heightvsyearPlot")
