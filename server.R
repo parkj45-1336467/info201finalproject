@@ -105,8 +105,8 @@ server <- function(input, output){
     x <- heightsdata[which(heightsdata$year %in% yearseq),]
     ggplot(data = x, aes(x = year, y = mean)) + 
       geom_point(shape = 22,
-                 color = "white",
-                 fill = "black",
+                 color = "black",
+                 fill = "white",
                  size = 4,
                  stroke = 4) +
       xlab("Range of Years") +
