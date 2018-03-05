@@ -1,13 +1,14 @@
 library(dplyr)
 library(ggplot2)
 library(shiny)
+library(shinythemes)
 
 nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
 # Define UI for app that draws a histogram ----
-  ui <- navbarPage("NBA vs. Height",
+  ui <- navbarPage(theme = shinytheme("cerulean"), "NBA vs. Height",
                    tabPanel("Home",
                    sidebarLayout(
-                     sidebarPanel(
+                     sidebarPanel(tags$img(src="nbalogo.jpg", height =250 , width =250),
                        sliderInput("Years",
                                    "Range of Years",
                                    min = min(heightsdata$year),
@@ -15,6 +16,9 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
                                    step = 1 ,
                                    value = c(1978, 2016),
                                    sep = "")
+                       , tags$img(src="shaq.jpg", height =250 , width =250)
+                       
+                       
                 
                        
                      ),

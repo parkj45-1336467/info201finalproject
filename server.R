@@ -2,6 +2,7 @@ library(dplyr)
 library(ggplot2)
 library(shiny)
 
+
 nba <- read.csv("./data/nba_season_data.csv", stringsAsFactors=FALSE)
 nba2004 <- nba %>% filter(year >= 2004 & truesalary != "" & height > 0) %>%
   mutate(height.feet = height * 0.0833333)
@@ -111,14 +112,14 @@ server <- function(input, output){
                  stroke = 4) +
       xlab("Range of Years") +
       ylab("Range of Heights (in feet)") +
-      geom_smooth(method = lm, se= TRUE, color = "red") +
-      ylim(c(6.35,6.6)) +
-      ggtitle("Change in Players' Height Over Time") + 
-      theme(plot.title = element_text(size = "20", hjust = "0.5"),
+      geom_smooth(method = lm, se= TRUE, color = "darkred", linetype= "dotted") +
+      ylim(c(6.45,6.6)) +
+      ggtitle("Height vs. Year") + 
+      theme(plot.title = element_text(size = "20", hjust = "0.5", face= "bold"),
             axis.text.x = element_text( size = "12"),
             axis.text.y = element_text( size = "12"),
-            axis.title.x = element_text(size = "13", face= "bold"),
-            axis.title.y = element_text(size = "13", face ="bold"),
+            axis.title.x = element_text(size = "13"),
+            axis.title.y = element_text(size = "13"),
             panel.background = element_rect(fill= "lightblue" , color = "blue"))
   
  }) }
