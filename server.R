@@ -8,7 +8,9 @@ nba2004 <- nba %>%
   mutate(height.feet = nba2004$height * 0.0833333) %>%
   mutate(heightinft = height*0.083)
 
-heightsdata <- nba2004 %>% group_by(year) %>% summarize(mean = mean(heightinft))
+heightsdata <- nba2004 %>%
+  group_by(year) %>%
+  summarize(mean = mean(heightinft))
 
 
 server <- function(input, output){
@@ -46,19 +48,29 @@ server <- function(input, output){
   height = 500, width = 800)
   
   output$heightvsyearPlot <- renderPlot({
-    
-    
-    yearseq<- seq(input$Years[1], input$Years[2])
-    x<- heightsdata[which(heightsdata$year %in% yearseq),]
+    yearseq <- seq(input$Years[1], input$Years[2])
+    x <- heightsdata[which(heightsdata$year %in% yearseq),]
     ggplot(data = x, aes(x = year, y = mean)) + 
-      geom_point(shape = 21, color = "Black", fill = "white", size = 4, stroke = 4) +
-      xlab("Range of Years") + ylab("Range of Heights (in feet)") +
-      geom_smooth(method = lm, se= TRUE, color = "green") + ylim(c(6.35,6.6)) +
-      ggtitle("Change in Players' Height Over Time") + 
-      theme(plot.title = element_text(size = "22", face = "bold", hjust = "0.5"), axis.text.x = element_text(color= "darkred", size = "12"), axis.text.y = element_text(color = "red", size = "12"),
-            axis.title.x = element_text(size = "13", face= "bold"), axis.title.y = element_text( size = "13", face ="bold"),
-            panel.background = element_rect(fill= "lightblue" , color = "lightblue"))
-  
+      geom_point(shape = 21,
+                 color = "Black",
+                 fill = "white",
+                 size = 4,
+                 stroke = 4) +
+      xlab("Range of Years") +
+      ylab("Range of Heights (in feet)") +
+      geom_smooth(method = lm,
+                  se= TRUE,
+                  color = "green") +
+      ylim(c(6.35,6.6)) + 
+      theme(plot.title = element_text(size = "22", face = "bold", hjust = "0.5"),
+        axis.text.x = element_text(color= "darkred", size = "12"),
+        axis.text.y = element_text(color = "red", size = "12"),
+        axis.title.x = element_text(size = "13", face= "bold"),
+        axis.title.y = element_text( size = "13", face ="bold"),
+        panel.background = element_rect(
+          fill= "lightblue",
+          color = "lightblue")) +
+    ggtitle("Change in Players' Height Over Time")
  }) }
 
 shinyServer(server)
