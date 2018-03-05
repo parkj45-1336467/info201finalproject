@@ -8,7 +8,10 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
     titlePanel("Salary & Height"),
     sidebarLayout(
       sidebarPanel(
-        selectInput("team", "Selecrt a team:", nba2004 %>% distinct(tm, .keep_all = TRUE) %>% select(tm)),
+        selectInput("team", "Select a team:", nba2004 %>%
+                      distinct(tm, .keep_all = TRUE) %>%
+                      rename(Team=tm) %>%
+                      select(Team)),
         numericInput("year", "Enter a year", 2004),
         helpText("Please type a year between 2004 and 2016"),
         actionButton("update", "Update View")

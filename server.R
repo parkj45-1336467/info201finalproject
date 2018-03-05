@@ -13,7 +13,7 @@ server <- function(input, output){
     teamData <- arrange(teamData, truesalary)
   }, ignoreNULL = FALSE)
   
-  temp.gradient <- c("turquoise2", "violet", "navy")
+  gradient <- c("turquoise2", "violet", "navy")
   
   output$plot <- renderPlot({
     ggplot(data = specData()) +
@@ -24,7 +24,7 @@ server <- function(input, output){
       labs(x = "Player Name",
            y = "Salary (Dollars)")+
       coord_flip() +
-      scale_fill_gradientn(colors = temp.gradient, 
+      scale_fill_gradientn(colors = gradient, 
                            guide = guide_colorbar(title = "Height (Feet)")) +
       scale_y_continuous(name = "Salary (US Dollars)", labels =
                            scales::dollar_format(
@@ -33,7 +33,7 @@ server <- function(input, output){
                              big.mark = ",",
                              negative_parens = FALSE)) +
       theme(text = element_text(size=17))
-  },
+    },
   height = 500, width = 800)
 }
 
