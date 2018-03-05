@@ -23,7 +23,25 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
                      )
                     )
                    ),
-                       
+                   
+    tabPanel("Stats vs. Height",
+      sidebarLayout(
+      sidebarPanel(
+        hr(),
+        sliderInput("years", "Years:",
+                    min = 2004, max = 2016,
+                    value = c(2004,2016)),
+        br(),
+        radioButtons("stats", h4("Stats"),
+                      c("Efficiency", "Defensive Rebound", "Offensive Rebound", "Rebound", "Block", "Steal", "Turnover")),
+        hr()
+      ),
+      mainPanel(
+        plotOutput("statsGraph")
+        )
+      )
+    ),               
+                                      
     tabPanel("Height VS Salary",
     sidebarLayout(
       sidebarPanel(
@@ -32,7 +50,7 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
                       rename(Team=tm) %>%
                       select(Team),
                     selected = "GSW"),
-        numericInput("year", "Enter a year", 2015),
+        numericInput("year", "Enter a year:", 2015),
         helpText("Please type a year between 2004 and 2016"),
         actionButton("update", "Update View")
       ),

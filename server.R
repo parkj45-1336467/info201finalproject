@@ -3,7 +3,6 @@ library(ggplot2)
 library(shiny)
 
 nba <- read.csv("./data/nba_season_data.csv", stringsAsFactors=FALSE)
-nba <- read.csv("./data/nba_season_data.csv", stringsAsFactors=FALSE)
 nba2004 <- nba %>% filter(year >= 2004 & truesalary != "" & height > 0) %>%
   mutate(height.feet = height * 0.0833333)
 modifieddata <- nba %>% filter(height > 0) %>% mutate(heightinft = height*0.083 )
@@ -44,6 +43,62 @@ server <- function(input, output){
       theme(text = element_text(size=17))
   },
   height = 500, width = 800)
+  
+  output$statsGraph <- renderPlot({
+    nba <- modifieddata %>% filter (year >= input$years[1] & year <= input$years[2] & per > 0 & orb > 0 & drb > 0 & trb > 0 &
+                             blk > 0 & stl >0 & tov > 0) %>% select(per, orb, drb, trb, blk, stl, tov, heightinft)
+    
+    if (input$stats == "Efficiency") {
+      stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(per))
+      ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
+        geom_line(col = "blue") +
+        geom_point() +
+        ggtitle("Player Efficiency Rate vs. Height")+
+        labs(x = "Height in ft", y = "Average Player Efficiency Rate based on the Height")
+    } else if (input$stats == "Rebound") {
+      stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(trb))
+      ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
+        geom_line(col = "red") +
+        geom_point() +
+        ggtitle("Rebound vs. Height")+
+        labs(x = "Height in ft", y = "Average Rebound based on the Height")
+    } else if (input$stats == "Block") {
+      stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(blk))
+      ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
+        geom_line(col = "purple") +
+        geom_point() +
+        ggtitle("Block vs. Height")+
+        labs(x = "Height in ft", y = "Average Block based on the Height")
+    } else if (input$stats == "Offensive Rebound") {
+      stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(orb))
+      ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_line(col = "green") +
+        geom_point() +
+        ggtitle("Offensive Rebound vs. Height")+
+        labs(x = "Height in ft", y = "Average Offensive Rebound based on the Height")
+    } else if (input$stats == "Defensive Rebound") {
+      stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(drb))
+      ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_line(col = "cyan") +
+        geom_point() +
+        ggtitle("Defensive Rebound vs. Height")+
+        labs(x = "Height in ft", y = "Average Defensive Rebound based on the Height")
+    } else if (input$stats == "Steal") {
+      stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(stl))
+      ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_line() +
+        geom_point() +
+        ggtitle("Steal vs. Height")+
+        labs(x = "Height in ft", y = "Average Steal based on the Height")
+    } else {
+      stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(tov))
+      ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_line(col = "violet") +
+        geom_point() +
+        ggtitle("Trunover vs. Height")+
+        labs(x = "Height in ft", y = "Average Turnover based on the Height")
+    }
+  })
   
   output$heightvsyearPlot <- renderPlot({
     yearseq <- seq(input$Years[1], input$Years[2])
