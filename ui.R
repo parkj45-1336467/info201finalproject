@@ -22,6 +22,7 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                    step = 1 ,
                    value = c(1978, 2016),
                    sep = ""),
+                 helpText("Select a range of years to see statistics from within that time frame."),
                  tags$img(src = "shaq.jpg", height = 300)
                ),
                mainPanel(plotOutput("plot.p1"))
@@ -35,10 +36,13 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                  sliderInput(
                    "p2.slider",
                    "Years:",
-                   min = 2004,
+                   min = 1978,
                    max = 2016,
-                   value = c(2004, 2016)
+                   step = 1,
+                   value = c(1978, 2016),
+                   sep = ""
                  ),
+                 helpText("Select a range of years to see statistics from within that time frame."),
                  br(),
                  radioButtons("stats",
                    h4("Game Statistic"),
