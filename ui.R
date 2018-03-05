@@ -13,8 +13,6 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
                                    min = min(heightsdata$year),
                                    max = max(heightsdata$year),
                                    value = c(min, max))
-                     
-                     
                 
                      ),
                      mainPanel(
