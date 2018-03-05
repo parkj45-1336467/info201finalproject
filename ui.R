@@ -1,32 +1,21 @@
+library(dplyr)
+library(ggplot2)
 library(shiny)
 
+nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
 # Define UI for app that draws a histogram ----
-ui <- fluidPage(
-  titlePanel("NBA Data!"),
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput(inputId = "year",
-                  label = "Year playing",
-                  min = min(nba$year),
-                  max = max(nba$year),
-                  step = 1,
-                  value = c(2000, 2016),
-                  sep = ""),
-      radioButtons(
-        inputId="stat",
-        label="Stat",
-        choices=c(
-          "Offensive rebound %"="orb",
-          "Defensive rebound %"="drb",
-          "Assists"="ast",
-          "Steals"="stl",
-          "Blocks"="blk",
-          "Turnovers"="tov"
-        )
+  ui <- fluidPage(
+    titlePanel("Salary & Height"),
+    sidebarLayout(
+      sidebarPanel(
+        selectInput("team", "pick your team:", nba2004 %>% distinct(tm, .keep_all = TRUE) %>% select(tm)),
+        numericInput("year", "type a year", 2004),
+        helpText("Please type a year between 2004 - 2016"),
+        actionButton("update", "Update View")
+      ),
+      mainPanel(
+        plotOutput("plot")
       )
-    ),
-    mainPanel(
-      plotOutput(outputId = "heightPlot")
     )
   )
-)
+shinyUI(ui)
