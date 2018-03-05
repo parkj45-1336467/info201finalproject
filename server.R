@@ -50,13 +50,13 @@ server <- function(input, output){
     yearseq<- seq(input$Years[1], input$Years[2])
     x<- heightsdata[which(heightsdata$year %in% yearseq),]
     ggplot(data = x, aes(x = year, y = mean)) + 
-      geom_point(shape = 22, color = "Black", fill = "white", size = 4, stroke = 4) +
+      geom_point(shape = 22, color = "white", fill = "black", size = 4, stroke = 4) +
       xlab("Range of Years") + ylab("Range of Heights (in feet)") +
-      geom_smooth(method = lm, se= TRUE, color = "green") + ylim(c(6.35,6.6)) +
+      geom_smooth(method = lm, se= TRUE, color = "red") + ylim(c(6.35,6.6)) +
       ggtitle("Change in Players' Height Over Time") + 
       theme(plot.title = element_text(size = "20", hjust = "0.5"), axis.text.x = element_text( size = "12"), axis.text.y = element_text( size = "12"),
             axis.title.x = element_text(size = "13", face= "bold"), axis.title.y = element_text(size = "13", face ="bold"),
-            panel.background = element_rect(fill= "lightblue" , color = "lightblue"))
+            panel.background = element_rect(fill= "lightblue" , color = "blue"))
   
  }) }
 

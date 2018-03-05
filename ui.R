@@ -12,7 +12,9 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
                                    "Range of Years",
                                    min = min(heightsdata$year),
                                    max = max(heightsdata$year),
-                                   value = c(min, max))
+                                   step = 1 ,
+                                   value = c(1978, 2016),
+                                   sep = "")
                 
                        
                      ),
