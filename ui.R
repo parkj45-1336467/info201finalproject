@@ -27,8 +27,9 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
         selectInput("team", "Select a team:", nba2004 %>%
                       distinct(tm, .keep_all = TRUE) %>%
                       rename(Team=tm) %>%
-                      select(Team)),
-        numericInput("year", "Enter a year", 2004),
+                      select(Team),
+                    selected = "GSW"),
+        numericInput("year", "Enter a year", 2015),
         helpText("Please type a year between 2004 and 2016"),
         actionButton("update", "Update View")
       ),
