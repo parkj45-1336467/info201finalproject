@@ -3,14 +3,12 @@ library(ggplot2)
 library(shiny)
 library(shinythemes)
 
-nba2004 <- nba %>% filter(year >= 2004 & truesalary != "")
-
 # Define UI for app that has multiple tabs
 
-ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statistics",
+ui <- navbarPage(theme = shinytheme("cerulean"), "NBA Interactive Height Statistics",
 
-    ## Page 1: Height Over Time
-    tabPanel("Height Over Time",
+    ## Tab 1: Height Over Time
+    tabPanel("Height vs. Time",
              sidebarLayout(
                sidebarPanel(
                  tags$img(src = "nbalogo.jpg", height = 150),
@@ -25,10 +23,12 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                  helpText("Select a range of years to see statistics from within that time frame."),
                  tags$img(src = "shaq.jpg", height = 300)
                ),
-               mainPanel(plotOutput("plot.p1"))
+               mainPanel(htmlOutput("header.t1"),
+                         plotOutput("plot.t1"),
+                         htmlOutput("text.t1"))
              )),
     
-    ## Page 2: Height vs. Game Stats
+    ## Tab 2: Height vs. Game Stats
     tabPanel("Height vs. Game Stats",
              sidebarLayout(
                sidebarPanel(
@@ -48,9 +48,9 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                    h4("Game Statistic"),
                    c(
                      "Efficiency",
-                     "Defensive Rebound %",
-                     "Offensive Rebound %",
-                     "Rebound %",
+                     "Defensive Rebound Percentage",
+                     "Offensive Rebound Percentage",
+                     "Rebound Percentage",
                      "Blocks",
                      "Steals",
                      "Turnovers"
@@ -58,17 +58,20 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                  ),
                  hr()
                ),
-               mainPanel(plotOutput("plot.p2"))
+               mainPanel(htmlOutput("header.t2"),
+                         plotOutput("plot.t2"),
+                         htmlOutput("text.t2"))
              )),
     
-    ## Page 3: Height vs. Salary
+    ## Tab 3: Height vs. Salary
     tabPanel("Height vs. Salary",
              sidebarLayout(
                sidebarPanel(
                  selectInput(
                    "team",
                    "Select a team:",
-                   nba2004 %>%
+                   nba %>%
+                     filter(year >= 2004 & truesalary != "") %>%
                      distinct(tm, .keep_all = TRUE) %>%
                      rename(Team = tm) %>%
                      select(Team),
@@ -78,7 +81,9 @@ ui <- navbarPage( theme = shinytheme("cerulean"), "NBA Interactive Height Statis
                  helpText("Please type a year between 2004 and 2016"),
                  actionButton("update", "Update View")
                ),
-               mainPanel(plotOutput("plot.p3"))
+               mainPanel(htmlOutput("header.t3"),
+                         plotOutput("plot.t3"),
+                         htmlOutput("text.t3"))
              ))
   )
 

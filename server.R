@@ -1,6 +1,7 @@
 library(dplyr)
 library(ggplot2)
 library(shiny)
+library(sourcetools)
 
 ### Data Wrangling
 
@@ -14,15 +15,20 @@ nba2004 <- nba %>% filter(year >= 2004 & truesalary != "" & height > 0) %>%
 
 # For our functions that do not organize by team, we can include all the teams from
 # 1978 - 2016 (the year range provided in the CSV file)
-modifieddata <- nba %>% filter(height > 0) %>% mutate(heightinft = height*0.083 )
+modifieddata <- nba %>% filter(height > 0) %>% mutate(heightinft = height * 0.083)
 heightsdata <- modifieddata %>% group_by(year) %>% summarize(mean = mean(heightinft))
 
 ### Creating Pages 
 server <- function(input, output){
   
-  ### --------------- Page 1: Height Over Time --------------- ###
+  ### --------------- Tab 1: Height Over Time --------------- ###
   
-  output$plot.p1 <- renderPlot({
+  # Add a header
+  output$header.t1 <- renderUI({HTML(
+    "<h1>Trends in Average Height<h1/>")})
+  
+  # Add an interactive plot
+  output$plot.t1 <- renderPlot({
     yearseq <- seq(input$p1.slider[1], input$p1.slider[2])
     x <- heightsdata[which(heightsdata$year %in% yearseq),]
     ggplot(data = x, aes(x = year, y = mean)) + 
@@ -45,15 +51,32 @@ server <- function(input, output){
     
   })
   
-  ### --------------- Page 2: Height Versus Game Stats --------------- ###
+  # Add a summary paragraph
+  output$text.t1 <- renderUI({
+    HTML("<h4>Summary<h4/>",
+         "<p>", read("txt/tab1/p1.txt"),
+         "<p>", read("txt/tab1/p2.txt"),
+         strrep("<br/>", 2)
+    )
+  })
   
-  output$plot.p2 <- renderPlot({
+  ### --------------- Tab 2: Height Versus Game Stats --------------- ###
+  
+  # Add a header
+  output$header.t2 <- renderUI({HTML(
+    "<h1>Player Heights vs Game Statistics<h1/>")})
+  
+  # Add an interactive plot
+  output$plot.t2 <- renderPlot({
+    
+    # Filter our data to get rid of zero values in the game stats we are looking at
     nba <- modifieddata %>% filter (year >= input$p2.slider[1] &
                                       year <= input$p2.slider[2] &
                                       per > 0 & orb > 0 & drb > 0 & trb > 0 &
                                       blk > 0 & stl >0 & tov > 0) %>%
       select(per, orb, drb, trb, blk, stl, tov, heightinft)
     
+    # Draw our plot based on user input
     if (input$stats == "Efficiency") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(per))
       ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
@@ -62,7 +85,7 @@ server <- function(input, output){
         ggtitle("Player Efficiency Rate vs. Height")+
         labs(x = "Height in ft", y = "Average Player Efficiency Rate based on the Height")
       
-    } else if (input$stats == "Rebound %") {
+    } else if (input$stats == "Rebound Percentage") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(trb))
       ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
         geom_line(col = "red") +
@@ -78,7 +101,7 @@ server <- function(input, output){
         ggtitle("Blocks vs. Height")+
         labs(x = "Height in ft", y = "Average Blocks based on the Height")
       
-    } else if (input$stats == "Offensive Rebound %") {
+    } else if (input$stats == "Offensive Rebound Percentage") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(orb))
       ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
         geom_line(col = "green") +
@@ -86,7 +109,7 @@ server <- function(input, output){
         ggtitle("Offensive Rebound vs. Height")+
         labs(x = "Height in ft", y = "Average Offensive Rebound Percentage based on the Height")
       
-    } else if (input$stats == "Defensive Rebound %") {
+    } else if (input$stats == "Defensive Rebound Percentage") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(drb))
       ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
         geom_line(col = "cyan") +
@@ -112,9 +135,23 @@ server <- function(input, output){
     }
   })
   
-  ### --------------- Page 3: Height Versus Salary by Team --------------- ###
+  # Add a summary paragraph
+  output$text.t2 <- renderUI({
+    HTML(strrep("<br/>", 2),
+         "<h4>Summary<h4/>",
+         "<p>", read("txt/tab2/p1.txt"),
+         strrep("<br/>", 2)
+    )
+  })
   
-  output$plot.p3 <- renderPlot({
+  ### --------------- Tab 3: Height Versus Salary by Team --------------- ###
+  
+  # Add a header
+  output$header.t3 <- renderUI({HTML(
+    "<h1>Player Heights vs Salaries by Team and Season<h1/>")})
+  
+  # Add an interactive plot
+  output$plot.t3 <- renderPlot({
     
     # Reactive function to read data from users
     specData <- eventReactive(input$update,{
@@ -147,9 +184,19 @@ server <- function(input, output){
                            big.mark = "",
                            negative_parens = FALSE)) +
       theme(text = element_text(size=17)) +
-      ggtitle(paste0(input$team, " Player Salaries for the ", input$year, " Season"))
+      ggtitle(paste0(input$team, ", ", input$year, " Season"))
   },
   height = 500, width = 800)
+  
+  # Add a summary paragraph
+  output$text.t3 <- renderUI({
+    HTML(strrep("<br/>", 5),
+         "<h4>Summary<h4/>",
+         "<p>", read("txt/tab3/p1.txt"),
+         "<p>", read("txt/tab3/p2.txt"),
+         strrep("<br/>", 2)
+    )
+  })
   
   }
 
