@@ -87,6 +87,7 @@ server <- function(input, output){
     if (input$stats == "Efficiency") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(per))
       ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
+        geom_smooth(method = lm, se= TRUE, color = "black", linetype= "dotted") +
         geom_line(col = "blue") +
         geom_point() +
         ggtitle("Player Efficiency Rate vs. Height")+
@@ -95,6 +96,7 @@ server <- function(input, output){
     } else if (input$stats == "Rebound Percentage") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(trb))
       ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
+        geom_smooth(method = lm, se= TRUE, color = "black", linetype= "dotted") +
         geom_line(col = "red") +
         geom_point() +
         ggtitle("Rebound Percentage vs. Height")+
@@ -103,6 +105,7 @@ server <- function(input, output){
     } else if (input$stats == "Blocks") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(blk))
       ggplot(data = stats, aes(x = heightinft, y = mean, group = 1)) +
+        geom_smooth(method = lm, se= TRUE, color = "black", linetype= "dotted") +
         geom_line(col = "purple") +
         geom_point() +
         ggtitle("Blocks vs. Height")+
@@ -111,6 +114,7 @@ server <- function(input, output){
     } else if (input$stats == "Offensive Rebound Percentage") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(orb))
       ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_smooth(method = lm, se= TRUE, color = "black", linetype= "dotted") +
         geom_line(col = "green") +
         geom_point() +
         ggtitle("Offensive Rebound vs. Height")+
@@ -119,6 +123,7 @@ server <- function(input, output){
     } else if (input$stats == "Defensive Rebound Percentage") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(drb))
       ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_smooth(method = lm, se= TRUE, color = "black", linetype= "dotted") +
         geom_line(col = "cyan") +
         geom_point() +
         ggtitle("Defensive Rebound vs. Height")+
@@ -127,6 +132,7 @@ server <- function(input, output){
     } else if (input$stats == "Steals") {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(stl))
       ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_smooth(method = lm, se= TRUE, color = "black", linetype= "dotted") +
         geom_line() +
         geom_point() +
         ggtitle("Steal vs. Height")+
@@ -135,6 +141,7 @@ server <- function(input, output){
     } else {
       stats <- nba %>% arrange(heightinft) %>% group_by(heightinft) %>% summarise(mean = mean(tov))
       ggplot(data = stats, aes(x = heightinft, y = mean , group = 1)) +
+        geom_smooth(method = lm, se= TRUE, color = "black", linetype= "dotted") +
         geom_line(col = "violet") +
         geom_point() +
         ggtitle("Trunover vs. Height")+
