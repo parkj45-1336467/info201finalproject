@@ -21,6 +21,13 @@ heightsdata <- modifieddata %>% group_by(year) %>% summarize(mean = mean(heighti
 ### Creating Pages 
 server <- function(input, output){
   
+  ### --------------- About Tab (Description) --------------- ###
+  
+  output$about <- renderUI({HTML(
+    "<h1>NBA Interactive Height Statistics Tool<h1/>",
+    read("txt/about/about.html")
+  )})
+  
   ### --------------- Tab 1: Height Over Time --------------- ###
   
   # Add a header

@@ -6,12 +6,15 @@ library(shinythemes)
 # Define UI for app that has multiple tabs
 
 ui <- navbarPage(theme = shinytheme("cerulean"), "NBA Interactive Height Statistics",
+                 
+    tabPanel("About",
+             htmlOutput("about")
+             ),
 
     ## Tab 1: Height Over Time
     tabPanel("Height vs. Time",
              sidebarLayout(
                sidebarPanel(
-                 tags$img(src = "nbalogo.jpg", height = 150),
                  sliderInput(
                    "p1.slider",
                    "Range of Years",
@@ -20,8 +23,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"), "NBA Interactive Height Statist
                    step = 1 ,
                    value = c(1978, 2016),
                    sep = ""),
-                 helpText("Select a range of years to see statistics from within that time frame."),
-                 tags$img(src = "shaq.jpg", height = 300)
+                 helpText("Select a range of years to see statistics from within that time frame.")
                ),
                mainPanel(htmlOutput("header.t1"),
                          plotOutput("plot.t1"),
